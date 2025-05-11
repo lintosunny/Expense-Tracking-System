@@ -59,7 +59,7 @@ def fetch_expense_summary(start_date, end_date):
     logger.info(f"fetch_expense_summary() called with start: {start_date} and end: {end_date}")
     with get_db_cursor() as cursor:
         cursor.execute(
-            '''SELECT category, SUM(amount) total_amount
+            '''SELECT category, SUM(amount) total
                FROM expenses 
                WHERE expense_date BETWEEN %s AND %s 
                GROUP BY category''',

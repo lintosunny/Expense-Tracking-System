@@ -54,3 +54,23 @@ def get_analytics(date_range: DateRange):
         }
 
     return breakdown
+
+
+@app.post("/monthly/")
+def monthly_summary():
+    data = db_helper.fetch_monthly_summary()
+
+    if data is None:
+        raise HTTPException(status_code=500, detail="Failed to receive summary from the data base.")
+    
+    summary = {'year': [],
+               'month': [],
+               'total': []
+               }
+
+    for row in data:
+        summary['year'].append(row['year'])
+        summary['month'].append(row['month'])
+        summary['total'].append(row['total'])
+
+    return summary

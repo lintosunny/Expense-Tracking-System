@@ -32,9 +32,32 @@ def analytics_tab():
         df = pd.DataFrame(data)
         df_sorted = df.sort_values(by="Percentage", ascending=False)
 
-        st.title("Expense breakdown by category")
+        col = st.columns((1, 1), gap='medium')
 
-        st.bar_chart(data=df_sorted.set_index("Category")["Percentage"], width=0, height=0, use_container_width=True)
+        with col[0]:
+            st.markdown('#### Expense by category')
+            df_sorted_2 = df_sorted.copy()
+            df_sorted_2['Percentage'] = df_sorted_2['Percentage'].round(2)
+            df_sorted_2['Percentage'] = df_sorted_2['Percentage'].astype(str) + '%'
+            df_sorted_2['Total'] = df_sorted_2['Total'].astype(int)
+            st.table(df_sorted_2.reset_index(drop=True))
 
-        df_sorted["Total"] = df_sorted["Total"].map("{:.2f}".format)
-        st.table(df_sorted)
+
+        with col[1]:
+            st.markdown('#### ')
+
+            st.dataframe(df_sorted,
+                 column_order=("Category", "Percentage"),
+                 hide_index=True,
+                 width=None,
+                 column_config={
+                    "Category": st.column_config.TextColumn(
+                        "Category",
+                    ),
+                    "Percentage": st.column_config.ProgressColumn(
+                        "Percentage",
+                        format="%.2f%%",
+                        min_value=0,
+                        max_value=100,
+                     )}
+                 )

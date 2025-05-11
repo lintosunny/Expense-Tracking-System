@@ -67,6 +67,19 @@ def fetch_expense_summary(start_date, end_date):
         )
         data = cursor.fetchall()
         return data
+    
+
+def fetch_monthly_summary():
+    logger.info(f"fetch_monthly_summary() called.")
+    with get_db_cursor() as cursor:
+        cursor.execute(
+            '''
+            SELECT year(expense_date) year, month(expense_date) month, sum(amount) total 
+            FROM expenses 
+            GROUP BY year(expense_date), month(expense_date)'''
+        )
+        data = cursor.fetchall()
+        return data
 
 
 if __name__ == "__main__":
@@ -76,3 +89,5 @@ if __name__ == "__main__":
     delete_expense_for_date("2024-08-01")
     summary = fetch_expense_summary("2024-08-03", "2024-08-04")
     print(summary)
+    data = fetch_monthly_summary()
+    print(data)

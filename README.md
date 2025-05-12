@@ -1,4 +1,4 @@
-# Expense-Tracking-System
+# Expense Tracking System
 This is an expense tracking system that consist streamlit frontend and FastAPI backend server. 
 <br> This application consist of:
 * manage expense
